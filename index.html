@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>謎解きゲーム</title>
+    <title>教養クイズ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>謎解きゲーム</h1>
-        <div id="riddle-container">
-            <p id="riddle-text"></p>
+        <div id="progress-container">
+            <!-- JavaScriptによって進捗バーがここに挿入されます -->
         </div>
-        <div class="input-area">
-            <input type="text" id="answer-input" placeholder="答えを入力">
-            <button id="submit-button">回答する</button>
+        <h1>教養クイズ - <span id="level-title"></span></h1>
+        <div id="quiz-container">
+            <!-- JavaScriptによって問題がここに挿入されます -->
         </div>
-        <p id="result-message"></p>
+        <button id="submit-button">採点する</button>
+        <div id="result-container">
+            <p id="result-message"></p>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

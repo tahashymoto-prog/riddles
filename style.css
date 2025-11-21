@@ -1,59 +1,310 @@
+/* --- Base Styles --- */
+:root {
+    --main-blue: #34568B; /* 落ち着いた青 */
+    --accent-yellow: #FFC107; /* 明るい黄色 */
+    --light-bg: #f8f9fa;
+    --dark-text: #212529;
+    --light-text: #f8f9fa;
+    --container-bg: rgba(255, 255, 255, 0.85);
+    --correct-bg: rgba(40, 167, 69, 0.15);
+    --wrong-bg: rgba(220, 53, 69, 0.15);
+    --correct-border: rgba(40, 167, 69, 0.5);
+    --wrong-border: rgba(220, 53, 69, 0.5);
+}
+
 body {
-    font-family: sans-serif;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--dark-text);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f0f0f0;
-}
-
-.container {
-    background-color: white;
+    min-height: 100vh;
     padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    text-align: center;
+    box-sizing: border-box;
+}
+
+/* --- Container --- */
+.container {
+    background: var(--container-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 2.5rem 3rem;
     width: 90%;
-    max-width: 500px;
+    max-width: 700px;
+    text-align: center;
 }
 
+/* --- Progress Bar --- */
+#progress-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 2.5rem;
+    position: relative;
+}
+
+.progress-step {
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+    position: relative;
+    font-size: 0.8rem;
+    color: #adb5bd;
+    font-weight: 700;
+    transition: color 0.4s ease;
+}
+
+.progress-step .step-circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: white;
+    border: 3px solid #ced4da;
+    margin: 0 auto 0.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.4s ease;
+    z-index: 1;
+    position: relative;
+}
+
+#progress-container::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #e9ecef;
+    z-index: 0;
+    transform: translateY(-50%);
+}
+
+#progress-bar {
+    position: absolute;
+    top: 15px;
+    left: 0;
+    height: 4px;
+    background-color: var(--accent-yellow);
+    z-index: 0;
+    transform: translateY(-50%);
+    width: 0%; /* JSで制御 */
+    transition: width 0.4s ease;
+}
+
+.progress-step.completed .step-circle,
+.progress-step.active .step-circle {
+    border-color: var(--accent-yellow);
+}
+
+.progress-step.completed .step-circle {
+    background-color: var(--accent-yellow);
+}
+
+.progress-step.active .step-circle {
+    background-color: var(--main-blue);
+    border-color: var(--main-blue);
+    transform: scale(1.1);
+}
+
+.progress-step.completed,
+.progress-step.active {
+    color: var(--dark-text);
+}
+
+
+/* --- Typography --- */
 h1 {
-    color: #333;
+    color: var(--main-blue);
+    font-weight: 700;
+    margin-bottom: 2rem;
+    font-size: 2rem;
 }
 
-#riddle-text {
+#level-title {
+    color: var(--main-blue);
+    display: inline-block;
+    padding-bottom: 5px;
+    border-bottom: 3px solid var(--accent-yellow);
+}
+
+.question-item p {
     font-size: 1.2rem;
-    min-height: 50px;
-    margin-bottom: 1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
 }
 
-.input-area {
-    margin-bottom: 1rem;
+/* --- Quiz Area --- */
+#quiz-container {
+    text-align: left;
+    margin-bottom: 2rem;
 }
 
-#answer-input {
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.question-item {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #dee2e6;
 }
 
-#submit-button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    color: white;
-    background-color: #007bff;
+.question-item:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.options-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.options-list li {
+    margin-bottom: 0.8rem;
+}
+
+.options-list label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.8rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.options-list label:hover {
+    border-color: var(--accent-yellow);
+    background-color: #fffaf0;
+}
+
+.options-list label:active {
+    transform: scale(0.98);
+}
+
+.options-list input[type="radio"] {
+    display: none; /* ラジオボタン自体は隠す */
+}
+
+.options-list input[type="radio"] + span {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #adb5bd;
+    margin-right: 1rem;
+    transition: all 0.2s ease-in-out;
+    flex-shrink: 0;
+}
+
+.options-list input[type="radio"]:checked + span {
+    background-color: var(--accent-yellow);
+    border-color: var(--accent-yellow);
+    box-shadow: 0 0 0 3px white inset;
+}
+
+
+/* --- Buttons --- */
+#submit-button, #next-level-button {
+    font-family: 'Noto Sans JP', sans-serif;
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark-text);
+    background: var(--accent-yellow);
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.2s ease-in-out;
+}
+
+button {
+    background-color: var(--accent-yellow);
+    border: none;
+    color: var(--dark-text);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 700;
     cursor: pointer;
 }
 
-#submit-button:hover {
-    background-color: #0056b3;
+#submit-button:hover, #next-level-button:hover, button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+}
+
+#submit-button:disabled {
+    background-color: #ced4da;
+    color: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* --- Result & Feedback --- */
+#result-container {
+    margin-top: 2rem;
+    font-size: 1.2rem;
 }
 
 #result-message {
     min-height: 24px;
-    font-weight: bold;
+    font-weight: 700;
+}
+
+.score {
+    color: var(--main-blue);
+    font-size: 1.5rem;
+}
+
+.correct-answer {
+    background-color: var(--correct-bg) !important;
+    border-color: var(--correct-border) !important;
+}
+
+.wrong-answer {
+    background-color: var(--wrong-bg) !important;
+    border-color: var(--wrong-border) !important;
+}
+
+/* --- Final Results --- */
+.results-table {
+    width: 100%;
+    margin-top: 1rem;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.results-table th, .results-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.results-table thead th {
+    color: var(--main-blue);
+    font-size: 1.1rem;
+    border-bottom-width: 2px;
+}
+
+.results-table tbody tr:last-of-type td {
+    border-bottom: none;
+}
+
+.results-table tfoot th, .results-table tfoot td {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--main-blue);
+    border-top: 2px solid #dee2e6;
+}
+
+.score-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: right;
 }
